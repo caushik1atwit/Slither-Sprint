@@ -1,3 +1,91 @@
 # Slither Sprint
 
-A two-player racing Snake game built with Python and Pygame.
+Slither Sprint is a fast-paced, two-player vertical split-screen Snake racing game built with Python and Pygame, using a modern src/ package layout.
+
+## Game Overview
+
+Players compete head-to-head, each controlling a snake that climbs upward in its own half of the screen. The objective is to reach the finish line first or outlast your opponent!
+
+### Features
+- **Split-Screen Action:** The window is divided into two panes: Player 1 (left) and Player 2 (right).
+- **Vertical Climb:** Snakes always move upward; players can only steer left or right.
+- **Scrolling World:** The screen scrolls as snakes climb higher.
+- **Collectibles:**
+	- Red apples: Score points and gain speed boosts after collecting several.
+	- Golden apples: Grant temporary invincibility.
+- **Obstacles:** Randomly spawn ahead as you climb, requiring quick reflexes.
+- **Power-Ups:** Speed boost and invincibility add strategic depth.
+- **Finish Line:** First to reach the top wins! If both crash, it's a draw.
+- **Quick Restart:** Press `R` to restart instantly.
+
+## Controls
+
+| Player      | Move Left | Move Right |
+|-------------|-----------|------------|
+| Player 1    | A         | D          |
+| Player 2    | ← (Left)  | → (Right)  |
+
+Other:
+- `R` — Restart the game
+- `ESC` — Quit
+
+## Requirements
+- Python 3.10+
+- Pygame
+
+## Setup
+
+Install dependencies (recommended):
+
+```bash
+uv pip install -r requirements.txt
+```
+or
+```bash
+pip install -r requirements.txt
+```
+
+## How to Run
+
+You can run the game using the Makefile:
+
+```bash
+make run
+```
+
+Or directly with uv:
+
+```bash
+uv run slither-sprint
+```
+
+## Code Formatting
+
+Format all code using Ruff (via uv):
+
+```bash
+make format
+```
+
+## Linting
+
+Check code style and lint with Ruff (via uv):
+
+```bash
+make lint
+```
+
+## Project Structure
+
+```
+src/
+	slither_sprint/
+		config.py
+		controller/
+		model/
+		view/
+		game.py
+```
+
+## Credits
+Developed by the Slither Sprint team.
