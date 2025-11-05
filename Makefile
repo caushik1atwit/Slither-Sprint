@@ -6,3 +6,6 @@ format:
 
 lint:
 	uv run ruff check .
+
+package:
+	cd src/slither_sprint && uv run pyinstaller --onefile --windowed game.py --paths=. --name SlitherSprintGame

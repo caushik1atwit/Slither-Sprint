@@ -75,6 +75,17 @@ Check code style and lint with Ruff (via uv):
 make lint
 ```
 
+## Deploying the Game
+
+We use pyinstaller to package the game as a single file which can run in any computer. 
+
+The latest version of the game will always be provided under `~/Slither-Sprint/SlitherSprintGame`. You can run that just like any other program.
+
+If you are developing and would like to test packaging the game run: 
+```
+make package
+```
+
 ## Project Structure
 
 ```
