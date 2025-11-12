@@ -1,0 +1,55 @@
+"""
+Configuration constants for Slither Sprint
+"""
+
+# Window settings
+WIDTH, HEIGHT = 900, 640
+CELL = 20
+FPS = 30
+STEP_MS = 110  # base snake step interval
+
+# Grid calculations
+GRID_W = WIDTH // CELL
+GRID_H = HEIGHT // CELL
+
+# Colors
+DIVIDER_COLOR = (50, 50, 60)
+BG_COLOR = (14, 16, 22)
+TEXT_COLOR = (230, 230, 240)
+
+P1_COLOR = (40, 220, 120)
+P1_HEAD = (20, 255, 160)
+P2_COLOR = (80, 150, 255)
+P2_HEAD = (120, 200, 255)
+
+OBSTACLE_A = (120, 120, 120)
+OBSTACLE_B = (140, 140, 140)
+
+RED_APPLE_COLOR = (255, 50, 50)
+GOLDEN_APPLE_COLOR = (255, 215, 0)
+FINISH_LINE_COLOR = (255, 255, 100)
+
+# Game settings
+PADDING = 2
+SNAKE_LEN = 12
+
+# Split-screen
+PANE_COLS = GRID_W // 2
+PANE1_X0, PANE1_X1 = 0, PANE_COLS - 1
+PANE2_X0, PANE2_X1 = PANE_COLS, GRID_W - 1
+
+# Obstacle spawning
+OBSTACLE_SEED = 8
+OBSTACLE_SPAWN_EVERY_STEPS = 5
+OBSTACLE_SPAWN_CHANCE = 0.3
+SPAWN_AHEAD_MIN, SPAWN_AHEAD_MAX = 8, 20
+
+# Power-ups
+SPEED_BOOST_DURATION = 5000  # 5 seconds in ms
+INVINCIBILITY_DURATION = 5000
+APPLES_FOR_SPEED_BOOST = 3
+GOLDEN_APPLE_SPAWN_CHANCE = 0.1
+
+# Game goals
+FINISH_LINE_DISTANCE = -500  # world Y coordinate for finish line
+MINIGAME_TRIGGER = FINISH_LINE_DISTANCE / 2  # halfway point
