@@ -53,6 +53,9 @@ class Snake:
             self.dx = -1
         elif right:
             self.dx = 1
+        else:
+            # When no keys are pressed, go straight up
+            self.dx = 0
 
     def collect_apple(self):
         """Collect a red apple and check for speed boost"""

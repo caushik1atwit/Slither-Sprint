@@ -15,6 +15,12 @@ dev = [
     "ruff>=0.14.3",
 ]
 
+[tool.pytest.ini_options]
+pythonpath = [
+    "src",
+    "src/slither_sprint",
+]
+
 [project.scripts]
 slither-sprint = "slither_sprint.game:main"
 
