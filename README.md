@@ -75,6 +75,13 @@ Check code style and lint with Ruff (via uv):
 make lint
 ```
 
+## Testing
+
+To test the game via pytest run: 
+```bash
+make test
+```
+
 ## Deploying the Game
 
 We use pyinstaller to package the game as a single file which can run in any computer. 

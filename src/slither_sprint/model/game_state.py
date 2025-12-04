@@ -38,6 +38,10 @@ class GameState:
         self.winner_text = None
         self.minigame_triggered = False
 
+        # Score tracking (persists across rounds)
+        self.score_p1 = 0
+        self.score_p2 = 0
+
         self.reset()
 
     def reset(self):

@@ -31,6 +31,10 @@ class Snake:
         self.powerup_end_time = 0
         self.base_step_ms = STEP_MS
         self.current_step_ms = STEP_MS
+        self.invincibility_boom_start_time = 0
+        self.invincibility_boom_duration = 300  # 300ms boom effect
+        self.speed_boost_boom_start_time = 0
+        self.speed_boost_boom_duration = 300  # 300ms boom effect
 
     @property
     def head(self):
@@ -73,9 +77,11 @@ class Snake:
         if powerup_type == PowerUpType.SPEED_BOOST:
             self.powerup_end_time = current_time + SPEED_BOOST_DURATION
             self.current_step_ms = int(self.base_step_ms * 0.7)  # 30% faster
+            self.speed_boost_boom_start_time = current_time  # Trigger boom effect
         elif powerup_type == PowerUpType.INVINCIBILITY:
             self.powerup_end_time = current_time + INVINCIBILITY_DURATION
             self.current_step_ms = self.base_step_ms
+            self.invincibility_boom_start_time = current_time  # Trigger boom effect
         else:
             self.powerup_end_time = 0
             self.current_step_ms = self.base_step_ms
@@ -90,6 +96,36 @@ class Snake:
     def is_invincible(self):
         """Check if snake is currently invincible"""
         return self.active_powerup == PowerUpType.INVINCIBILITY
+
+    def get_boom_intensity(self):
+        """Get the current invincibility boom effect intensity (0.0 to 1.0)"""
+        if self.invincibility_boom_start_time == 0:
+            return 0.0
+
+        current_time = pygame.time.get_ticks()
+        elapsed = current_time - self.invincibility_boom_start_time
+
+        if elapsed >= self.invincibility_boom_duration:
+            return 0.0
+
+        # Start strong and fade out
+        progress = elapsed / self.invincibility_boom_duration
+        return 1.0 - progress
+
+    def get_speed_boost_boom_intensity(self):
+        """Get the current speed boost boom effect intensity (0.0 to 1.0)"""
+        if self.speed_boost_boom_start_time == 0:
+            return 0.0
+
+        current_time = pygame.time.get_ticks()
+        elapsed = current_time - self.speed_boost_boom_start_time
+
+        if elapsed >= self.speed_boost_boom_duration:
+            return 0.0
+
+        # Start strong and fade out
+        progress = elapsed / self.speed_boost_boom_duration
+        return 1.0 - progress
 
     def step(self):
         """Move the snake forward one step"""

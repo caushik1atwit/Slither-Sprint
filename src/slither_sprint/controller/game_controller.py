@@ -5,6 +5,7 @@ Game Controller - manages game loop and logic
 import pygame
 import random
 from model.game_state import GameState
+from model.game_mode import GameMode
 from view.renderer import Renderer
 from config import (
     WIDTH,
@@ -32,6 +33,7 @@ class GameController:
 
         self.acc_ms_p1 = 0
         self.acc_ms_p2 = 0
+        self.game_mode = GameMode.MENU
 
     def run(self):
         """Main game loop"""
@@ -44,12 +46,18 @@ class GameController:
                 running = False
                 continue
 
-            # Update game
-            if self.game_state.winner_text is None:
-                self._update_game(dt)
-
-            # Render
-            self.renderer.render(self.game_state)
+            # Update and render based on game mode
+            if self.game_mode == GameMode.MENU:
+                self.renderer.render_menu()
+            elif self.game_mode == GameMode.PLAYING:
+                # Update game
+                if self.game_state.winner_text is None:
+                    self._update_game(dt)
+                # Render
+                self.renderer.render(self.game_state)
+            elif self.game_mode == GameMode.PAUSED:
+                # Just render the menu (paused state)
+                self.renderer.render_menu()
 
     def _handle_events(self):
         """
@@ -64,15 +72,31 @@ class GameController:
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     return False
+                if event.key == pygame.K_SPACE:
+                    # Start game from menu
+                    if self.game_mode == GameMode.MENU:
+                        self.game_mode = GameMode.PLAYING
+                        self.game_state.reset()
+                        self.acc_ms_p1 = 0
+                        self.acc_ms_p2 = 0
+                if event.key == pygame.K_p:
+                    # Toggle pause
+                    if self.game_mode == GameMode.PLAYING:
+                        self.game_mode = GameMode.PAUSED
+                    elif self.game_mode == GameMode.PAUSED:
+                        self.game_mode = GameMode.PLAYING
                 if event.key == pygame.K_r:
-                    self.game_state.reset()
-                    self.acc_ms_p1 = 0
-                    self.acc_ms_p2 = 0
+                    # Restart game
+                    if self.game_mode == GameMode.PLAYING:
+                        self.game_state.reset()
+                        self.acc_ms_p1 = 0
+                        self.acc_ms_p2 = 0
 
-        # Handle continuous key presses for steering
-        keys = pygame.key.get_pressed()
-        self.game_state.snake1.steer(keys[pygame.K_a], keys[pygame.K_d])
-        self.game_state.snake2.steer(keys[pygame.K_LEFT], keys[pygame.K_RIGHT])
+        # Handle continuous key presses for steering (only when playing)
+        if self.game_mode == GameMode.PLAYING:
+            keys = pygame.key.get_pressed()
+            self.game_state.snake1.steer(keys[pygame.K_a], keys[pygame.K_d])
+            self.game_state.snake2.steer(keys[pygame.K_LEFT], keys[pygame.K_RIGHT])
 
         return True
 
@@ -191,15 +215,23 @@ class GameController:
         s1 = self.game_state.snake1
         s2 = self.game_state.snake2
 
+        # Only check if winner hasn't been determined yet
+        if self.game_state.winner_text is not None:
+            return
+
         # Check for finish line
         if s1.alive and s1.head[1] <= FINISH_LINE_DISTANCE:
+            self.game_state.score_p1 += 1
             self.game_state.winner_text = f"{s1.name} wins! Reached the finish line!"
         elif s2.alive and s2.head[1] <= FINISH_LINE_DISTANCE:
+            self.game_state.score_p2 += 1
             self.game_state.winner_text = f"{s2.name} wins! Reached the finish line!"
         # Check for crashes
         elif not s1.alive and s2.alive:
+            self.game_state.score_p2 += 1
             self.game_state.winner_text = f"{s2.name} wins! {s1.name} crashed!"
         elif not s2.alive and s1.alive:
+            self.game_state.score_p1 += 1
             self.game_state.winner_text = f"{s1.name} wins! {s2.name} crashed!"
         elif not s1.alive and not s2.alive:
             self.game_state.winner_text = "Draw! Both crashed!"
